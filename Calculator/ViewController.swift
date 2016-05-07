@@ -65,5 +65,43 @@ class ViewController: UIViewController {
         displayValue = brain.result
     }
     
+    private func adjustButtonLayout(view: UIView, portrait: Bool) {
+        for subview in view.subviews {
+            if subview.tag == 1 {
+                subview.hidden = portrait
+            } else if subview.tag == 2 {
+                subview.hidden = !portrait
+            }
+            if let button = subview as? UIButton {
+                button.setBackgroundColor(UIColor.blackColor(), forState: .Highlighted)
+            } else if let stack = subview as? UIStackView {
+                adjustButtonLayout(stack, portrait: portrait);
+            }
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        adjustButtonLayout(view, portrait: traitCollection.horizontalSizeClass == .Compact && traitCollection.verticalSizeClass == .Regular)
+    }
+    
+    override func willTransitionToTraitCollection(newCollection: UITraitCollection, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransitionToTraitCollection(newCollection, withTransitionCoordinator: coordinator)
+        adjustButtonLayout(view, portrait: newCollection.horizontalSizeClass == .Compact && newCollection.verticalSizeClass == .Regular)
+    }
+    
+}
+
+extension UIButton {
+    func setBackgroundColor(color: UIColor, forState state: UIControlState) {
+        let rect = CGRectMake(0.0, 0.0, 1.0, 1.0)
+        UIGraphicsBeginImageContextWithOptions(rect.size, false, 0)
+        let context = UIGraphicsGetCurrentContext();
+        color.setFill()
+        CGContextFillRect(context, rect)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        setBackgroundImage(image, forState: state);
+    }
 }
 

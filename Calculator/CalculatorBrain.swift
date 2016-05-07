@@ -8,8 +8,11 @@
 
 import Foundation
 
-func multiply(op1: Double, op2: Double) -> Double {
-    return op1 * op2
+func factorial(op1: Double) -> Double {
+    if (op1 <= 1) {
+        return 1
+    }
+    return op1 * factorial(op1 - 1.0)
 }
 
 class CalculatorBrain {
@@ -24,11 +27,25 @@ class CalculatorBrain {
         "e" : Operation.Constant(M_E),
         "±" : Operation.UnaryOperation({ -$0 }),
         "√" : Operation.UnaryOperation(sqrt),
+        "x²" : Operation.UnaryOperation({ pow($0, 2) }),
+        "x³" : Operation.UnaryOperation({ pow($0, 3) }),
+        "x⁻¹" : Operation.UnaryOperation({ 1 / $0 }),
+        "sin" : Operation.UnaryOperation(sin),
         "cos" : Operation.UnaryOperation(cos),
-        "×" : Operation.BinaryOperation({ $0 * $1 }),
-        "÷" : Operation.BinaryOperation({ $0 / $1 }),
-        "+" : Operation.BinaryOperation({ $0 + $1 }),
-        "-" : Operation.BinaryOperation({ $0 - $1 }),
+        "tan" : Operation.UnaryOperation(tan),
+        "sinh" : Operation.UnaryOperation(sinh),
+        "cosh" : Operation.UnaryOperation(cosh),
+        "tanh" : Operation.UnaryOperation(tanh),
+        "ln" : Operation.UnaryOperation(log),
+        "log" : Operation.UnaryOperation(log10),
+        "eˣ" : Operation.UnaryOperation(exp),
+        "10ˣ" : Operation.UnaryOperation({ pow(10, $0) }),
+        "x!" : Operation.UnaryOperation(factorial),
+        "×" : Operation.BinaryOperation(*),
+        "÷" : Operation.BinaryOperation(/),
+        "+" : Operation.BinaryOperation(+),
+        "-" : Operation.BinaryOperation(-),
+        "xʸ" : Operation.BinaryOperation(pow),
         "=" : Operation.Equals
     ]
     
