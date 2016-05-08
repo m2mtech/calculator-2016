@@ -12,6 +12,8 @@ class ViewController: UIViewController {
     
     @IBOutlet private weak var display: UILabel!
     
+    @IBOutlet private weak var history: UILabel!
+    
     private var userIsInTheMiddleOfTyping = false {
         didSet {
             if !userIsInTheMiddleOfTyping {
@@ -49,6 +51,7 @@ class ViewController: UIViewController {
         }
         set {
             display.text = String(newValue)
+            history.text = brain.description + (brain.isPartialResult ? " …" : " =")
         }
     }
     
