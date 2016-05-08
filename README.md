@@ -4,6 +4,7 @@ written in Xcode 7.3.1 for iOS 9.2.1
 
 ### various versions are available via branches and tags:
 
++ [Assignment #1 Task #5](http://cs193p.m2m.at/cs193p-assignment-1-task-5-winter-2016/) -> [assignment1task5](https://github.com/m2mtech/calculator-2016/tree/assignment1task5)
 + [Assignment #1 Tasks #3 & #4](http://cs193p.m2m.at/cs193p-assignment-1-task-3-4-winter-2016/) -> [assignment1task4](https://github.com/m2mtech/calculator-2016/tree/assignment1task4)
 + [Assignment #1 Tasks #1 & #2](http://cs193p.m2m.at/cs193p-assignment-1-task-1-2-winter-2016/) -> [assignment1task2](https://github.com/m2mtech/calculator-2016/tree/assignment1task2)
 
