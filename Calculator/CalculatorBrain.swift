@@ -82,11 +82,13 @@ class CalculatorBrain {
         "+" : Operation.BinaryOperation(+, { $0 + " + " + $1 }, 0),
         "-" : Operation.BinaryOperation(-, { $0 + " - " + $1 }, 0),
         "xʸ" : Operation.BinaryOperation(pow, { $0 + " ^ " + $1 }, 2),
-        "=" : Operation.Equals
+        "=" : Operation.Equals,
+        "rand" : Operation.NullaryOperation(drand48, "rand()")
     ]
     
     private enum Operation {
         case Constant(Double)
+        case NullaryOperation(() -> Double, String)
         case UnaryOperation((Double) -> Double, (String) -> String)
         case BinaryOperation((Double, Double) -> Double, (String, String) -> String, Int)
         case Equals        
@@ -100,6 +102,9 @@ class CalculatorBrain {
             case .Constant(let value):
                 accumulator = value
                 descriptionAccumulator = symbol
+            case .NullaryOperation(let function, let descriptionValue):
+                accumulator = function()
+                descriptionAccumulator = descriptionValue
             case .UnaryOperation(let function, let descriptionFunction):
                 accumulator = function(accumulator)
                 descriptionAccumulator = descriptionFunction(descriptionAccumulator)
