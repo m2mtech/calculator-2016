@@ -68,6 +68,13 @@ class ViewController: UIViewController {
         displayValue = brain.result
     }
     
+    
+    @IBAction func clearEverything(sender: UIButton) {
+        brain = CalculatorBrain()
+        display.text = "0"
+        history.text = " "
+    }
+    
     private func adjustButtonLayout(view: UIView, portrait: Bool) {
         for subview in view.subviews {
             if subview.tag == 1 {
