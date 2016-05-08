@@ -42,6 +42,12 @@ class CalculatorBrain {
         }
     }
     
+    var isPartialResult: Bool {
+        get {
+            return pending != nil
+        }
+    }
+    
     private var operations: Dictionary<String,Operation> = [
         "π" : Operation.Constant(M_PI),
         "e" : Operation.Constant(M_E),
