@@ -45,13 +45,22 @@ class ViewController: UIViewController {
         }
     }
     
-    private var displayValue: Double {
+    private var displayValue: Double? {
         get {
-            return Double(display.text!)!
+            if let text = display.text, value = Double(text) {
+                return value
+            }
+            return nil
         }
         set {
-            display.text = String(newValue)
-            history.text = brain.description + (brain.isPartialResult ? " …" : " =")
+            if let value = newValue {
+                display.text = String(value)
+                history.text = brain.description + (brain.isPartialResult ? " …" : " =")
+            } else {
+                display.text = "0"
+                history.text = " "
+                userIsInTheMiddleOfTyping = false
+            }
         }
     }
     
@@ -59,7 +68,7 @@ class ViewController: UIViewController {
     
     @IBAction private func performOperation(sender: UIButton) {
         if userIsInTheMiddleOfTyping {
-            brain.setOperand(displayValue)
+            brain.setOperand(displayValue!)
             userIsInTheMiddleOfTyping = false
         }
         if let mathematicalSymbol = sender.currentTitle {
@@ -83,9 +92,7 @@ class ViewController: UIViewController {
     
     @IBAction func clearEverything(sender: UIButton) {
         brain = CalculatorBrain()
-        display.text = "0"
-        history.text = " "
-        userIsInTheMiddleOfTyping = false
+        displayValue = nil
     }
     
     private func adjustButtonLayout(view: UIView, portrait: Bool) {
