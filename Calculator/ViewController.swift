@@ -68,11 +68,24 @@ class ViewController: UIViewController {
         displayValue = brain.result
     }
     
+    @IBAction func backSpace(sender: UIButton) {
+        if userIsInTheMiddleOfTyping {
+            if var text = display.text {
+                text.removeAtIndex(text.endIndex.predecessor())
+                if text.isEmpty {
+                    text = "0"
+                    userIsInTheMiddleOfTyping = false
+                }
+                display.text = text
+            }
+        }
+    }
     
     @IBAction func clearEverything(sender: UIButton) {
         brain = CalculatorBrain()
         display.text = "0"
         history.text = " "
+        userIsInTheMiddleOfTyping = false
     }
     
     private func adjustButtonLayout(view: UIView, portrait: Bool) {
