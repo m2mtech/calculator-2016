@@ -16,11 +16,21 @@ func factorial(op1: Double) -> Double {
 }
 
 class CalculatorBrain {
+    
+    var decimalDigits: Int
+    
+    init(decimalDigits:Int) {
+        self.decimalDigits = decimalDigits
+    }
+    
     private var accumulator = 0.0
     
     func setOperand(operand: Double) {
         accumulator = operand
-        descriptionAccumulator = String(format:"%g", operand)
+        let formatter = NSNumberFormatter()
+        formatter.numberStyle = .DecimalStyle
+        formatter.maximumFractionDigits = decimalDigits
+        descriptionAccumulator = formatter.stringFromNumber(operand)!
     }
     
     private var descriptionAccumulator = "0" {

@@ -23,15 +23,22 @@ class ViewController: UIViewController {
     }
     private var userIsInTheMiddleOfFloatingPointNummer = false
     
+    private let decimalSeparator = NSNumberFormatter().decimalSeparator!
+    
+    private struct Constants {
+        static let DecimalDigits = 6
+    }
+    
+    
     @IBAction private func touchDigit(sender: UIButton) {
         var digit = sender.currentTitle!
         
-        if digit == "." {
+        if digit == decimalSeparator {
             if userIsInTheMiddleOfFloatingPointNummer {
                 return
             }
             if !userIsInTheMiddleOfTyping {
-                digit = "0."
+                digit = "0" + decimalSeparator
             }
             userIsInTheMiddleOfFloatingPointNummer = true
         }
@@ -47,14 +54,17 @@ class ViewController: UIViewController {
     
     private var displayValue: Double? {
         get {
-            if let text = display.text, value = Double(text) {
+            if let text = display.text, value = NSNumberFormatter().numberFromString(text)?.doubleValue {
                 return value
             }
             return nil
         }
         set {
             if let value = newValue {
-                display.text = String(value)
+                let formatter = NSNumberFormatter()
+                formatter.numberStyle = .DecimalStyle
+                formatter.maximumFractionDigits = Constants.DecimalDigits
+                display.text = formatter.stringFromNumber(value)
                 history.text = brain.description + (brain.isPartialResult ? " …" : " =")
             } else {
                 display.text = "0"
@@ -64,7 +74,7 @@ class ViewController: UIViewController {
         }
     }
     
-    private var brain = CalculatorBrain()
+    private var brain = CalculatorBrain(decimalDigits: Constants.DecimalDigits)
     
     @IBAction private func performOperation(sender: UIButton) {
         if userIsInTheMiddleOfTyping {
@@ -91,7 +101,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func clearEverything(sender: UIButton) {
-        brain = CalculatorBrain()
+        brain = CalculatorBrain(decimalDigits: Constants.DecimalDigits)
         displayValue = nil
     }
     
@@ -104,6 +114,9 @@ class ViewController: UIViewController {
             }
             if let button = subview as? UIButton {
                 button.setBackgroundColor(UIColor.blackColor(), forState: .Highlighted)
+                if button.tag == 3 {
+                    button.setTitle(decimalSeparator, forState: .Normal)
+                }
             } else if let stack = subview as? UIStackView {
                 adjustButtonLayout(stack, portrait: portrait);
             }
